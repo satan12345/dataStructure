@@ -1,14 +1,12 @@
 package com.able;
 
 
-import java.util.Arrays;
-
-public class Array {
+public class Array<T> {
 
     /**
      * 存放元素的数组
      */
-    private int[] data;
+    private T[] data;
     /**
      * data数组中有效元素的个数 或者可以说是数组的下一个元素的索引位置
      */
@@ -20,7 +18,7 @@ public class Array {
      * @param capacity
      */
     public Array(int capacity) {
-        data = new int[capacity];
+        data = (T[]) new Object[capacity];
         size = 0;
     }
 
@@ -63,7 +61,7 @@ public class Array {
      *
      * @param element
      */
-    public void addLast(int element) {
+    public void addLast(T element) {
 //        if (size >= data.length) {
 //            throw new RuntimeException("Add Last failed Array is Full");
 //        }
@@ -77,7 +75,7 @@ public class Array {
      *
      * @param element
      */
-    public void addFirst(int element) {
+    public void addFirst(T element) {
         add(element, 0);
     }
 
@@ -87,7 +85,7 @@ public class Array {
      * @param index
      * @return
      */
-    public int get(int index) {
+    public T get(int index) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("index is illegal");
         }
@@ -96,10 +94,11 @@ public class Array {
 
     /**
      * 设置元素
+     *
      * @param index
      * @param element
      */
-    public void set(int index, int element) {
+    public void set(int index, T element) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("index is illegal");
         }
@@ -112,7 +111,7 @@ public class Array {
      * @param element
      * @param index
      */
-    public void add(int element, int index) {
+    public void add(T element, int index) {
         if (size >= data.length) {
             throw new RuntimeException("Add failed, Array is full");
         }
@@ -124,6 +123,96 @@ public class Array {
         }
         data[index] = element;
         size++;
+    }
+
+    /**
+     * 包含元素
+     *
+     * @param element
+     * @return
+     */
+    public boolean contains(T element) {
+        for (int i = 0; i < size; i++) {
+            if (element.equals(data[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /***删除指定元素
+    * @author jipeng
+    * @date 2019/9/10 20:58
+    * @return void
+    **/
+    public boolean removeElement(T element) {
+        int index = find(element);
+        if (index != -1) {
+            remove(index);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 删除指定索引位的元素
+     *
+     * @param index
+     * @return
+     */
+    public T remove(int index) {
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException("index error");
+        }
+        T node = data[index];
+        /**
+         * 指定i为要删除索引的后一个元素 之所以用i=index+1 则是为了保证用后一个元素不会超过size,导致数组越界
+         *   for (int i = index; i < size; i++) {
+         *             data[i ] = data[i+1];
+         *         }
+         *         这种写法 会存在在删除最后一个元素的时候 数组越界的问题
+         */
+        for (int i = index + 1; i < size; i++) {
+            data[i - 1] = data[i];
+        }
+        size--;
+        //这种情况会存在最后一个元素还在 所以需要通过data[size]=null 来释放最后一个元素 便于GC
+        data[size]=null;
+        return node;
+    }
+
+    /***删除第一个元素
+     * @author jipeng
+     * @date 2019/9/10 20:53
+     * @return int
+     **/
+
+    public T removeFirst() {
+        return remove(0);
+    }
+
+    /***删除最后一个元素
+     * @author jipeng
+     * @date 2019/9/10 20:54
+     * @return int
+     **/
+
+    public T removeLast() {
+        return remove(size - 1);
+    }
+
+
+    /***
+     * 查找元素的索引
+     * @param element
+     * @return
+     */
+    public int find(T element) {
+        for (int i = 0; i < size; i++) {
+            if (element == data[i]) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -142,4 +231,11 @@ public class Array {
     }
 
 
+//    @Override
+//    public String toString() {
+//        return new StringJoiner(", ", Array.class.getSimpleName() + "[", "]")
+//                .add("data=" + Arrays.toString(data))
+//                .add("size=" + size)
+//                .toString();
+//    }
 }

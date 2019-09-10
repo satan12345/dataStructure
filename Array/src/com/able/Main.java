@@ -2,18 +2,24 @@ package com.able;
 
 public class Main {
     public static void main(String[] argsl) {
-        Array array = new Array(20);
-        for (int i = 0; i < 10; i++) {
-            array.addLast(i);
+        Array<String> array = new Array(20);
+        for (int i = 0; i < 20; i++) {
+            array.addLast(String.valueOf(i)+"X");
         }
+//
+//        System.out.println(array);
+//
+//        array.add(100,1);
+//        System.out.println(array);
+//
+//        array.addFirst(-1);
 
         System.out.println(array);
 
-        array.add(100,1);
+//        array.remove(19);
+        array.removeFirst();
         System.out.println(array);
-
-        array.addFirst(-1);
-
+        array.removeLast();
         System.out.println(array);
     }
 }
