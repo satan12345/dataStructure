@@ -92,6 +92,14 @@ public class Array<T> {
         return data[index];
     }
 
+    public T getFirst(){
+        return get(0);
+    }
+
+    public T getLast(){
+        return get(size-1);
+    }
+
     /**
      * 设置元素
      *
