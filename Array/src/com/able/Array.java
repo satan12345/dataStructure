@@ -112,17 +112,29 @@ public class Array<T> {
      * @param index
      */
     public void add(T element, int index) {
-        if (size >= data.length) {
-            throw new RuntimeException("Add failed, Array is full");
-        }
+        //判断index 是否在范围中
         if (index < 0 || index > size) {
             throw new IllegalArgumentException("Add failed Require index>=0 and index<=size");
+        }
+        //数组容量已经满了
+        if (size == data.length) {
+           // throw new RuntimeException("Add failed, Array is full");
+            resize(2*data.length);
         }
         for (int i = size; i > index; i--) {
             data[i] = data[i - 1];
         }
         data[index] = element;
         size++;
+    }
+
+    private void resize(int capacity) {
+        T[] newData= (T[]) new Object[capacity];
+        for (int i = 0; i < data.length; i++) {
+            newData[i]=data[i];
+        }
+        data=newData;
+
     }
 
     /**
