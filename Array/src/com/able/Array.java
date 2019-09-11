@@ -130,7 +130,7 @@ public class Array<T> {
 
     private void resize(int capacity) {
         T[] newData= (T[]) new Object[capacity];
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0; i < size; i++) {
             newData[i]=data[i];
         }
         data=newData;
@@ -189,6 +189,10 @@ public class Array<T> {
         size--;
         //这种情况会存在最后一个元素还在 所以需要通过data[size]=null 来释放最后一个元素 便于GC
         data[size]=null;
+
+        if (size==data.length/2) {
+            resize(data.length/2);
+        }
         return node;
     }
 
