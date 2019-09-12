@@ -198,7 +198,7 @@ public class Array<T> {
         //这种情况会存在最后一个元素还在 所以需要通过data[size]=null 来释放最后一个元素 便于GC
         data[size]=null;
 
-        if (size==data.length/2) {
+        if (size==data.length/4&&data.length>1) {
             resize(data.length/2);
         }
         return node;
