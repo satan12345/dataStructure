@@ -19,6 +19,10 @@ public class TestQueue {
         double time2 = testArrayQueue(loopQueue, opCount);
         System.out.println("loopQueue,time:"+time2+"s");
 
+        LinkedListQueue<Integer> linkedListQueue=new LinkedListQueue<>();
+
+        double time3 = testArrayQueue(linkedListQueue, opCount);
+        System.out.println("linkedListQueue,time="+time3);
         /**在10W次的操作中
          * ArrayQueue,time:3.564126452s
          * loopQueue,time:0.013619204s
