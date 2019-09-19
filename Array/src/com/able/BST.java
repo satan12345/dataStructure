@@ -102,6 +102,137 @@ public class BST<E extends Comparable<E>> {
         return parentNode;
     }
 
+    /**
+     * 查询是否存在元素
+     *
+     * @param e
+     * @return
+     */
+    public boolean contains(E e) {
+        return contains(root, e);
+    }
+
+    private boolean contains(Node parent, E e) {
+        //节点为null 则不存在还有元素
+        if (parent == null) {
+            return false;
+        }
+        //节点中的元素跟要查询的元素相同 则存
+        if (e.compareTo(parent.e) == 0) {
+            return true;
+        } else if (e.compareTo(parent.e) < 0) {
+            //元素小于节点中的元素 则继续中节点的左节点开始查找
+            return contains(parent.left, e);
+        } else {
+            //元素大于节点中的元素 则继续从节点的右子树节点开始递归
+            return contains(parent.right, e);
+        }
+
+    }
+
+    /**
+     * 前序遍历
+     */
+    public void preOrder() {
+        preOrder(root);
+    }
+
+    //前序遍历 以Node为根节点的二分搜索树 递归算法
+    private void preOrder(Node e) {
+        if (e == null) {
+            return;
+        }
+        //对当前节点进行访问操作
+        System.out.println(e.e);
+        //遍历左子树
+        preOrder(e.left);
+        //遍历右子树
+        preOrder(e.right);
+    }
+
+    /**
+     * 中序遍历
+     */
+    public void midOrder() {
+        midOrder(root);
+    }
+
+    private void midOrder(Node parent) {
+        if (parent == null) {
+            return;
+        }
+        //递归调用当前节点的左子树
+        midOrder(parent.left);
+        //操作当前元素的节点
+        System.out.println(parent.e);
+        //递归调用当前节点的右子树
+        midOrder(parent.right);
+
+    }
+    //后续遍历
+    public void postOrder(){
+        postOrder(root);
+    }
+
+    private void postOrder(Node node) {
+        if (node==null) {
+            return;
+        }
+        //操作左子树
+        postOrder(node.left);
+        //操作右子树
+        postOrder(node.right);
+        //操作当前节点
+        System.out.println(node.e);
+
+    }
+
+    public static void main(String[] argsl) {
+        BST<Integer> bst = new BST<>();
+        int[] nums = new int[]{5, 3, 6, 8, 4, 2};
+        for (int num : nums) {
+            // bst.add(num);
+            bst.add1(num);
+        }
+        //////////////////////////////
+        //            5             //
+        //          /  \            //
+        //         3    6           //
+        //        / \     \         //
+        //       2   4     8        //
+        //////////////////////////////
+        bst.preOrder();
+        System.out.println("=======");
+//        System.out.println(bst);
+
+        bst.midOrder();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        generateBstString(root, 0, stringBuilder);
+        return stringBuilder.toString();
+    }
+
+    private void generateBstString(Node node, int depth, StringBuilder stringBuilder) {
+        if (node == null) {
+            stringBuilder.append(generateDepthSring(depth) + "NULL\n");
+            return;
+        }
+        stringBuilder.append(generateDepthSring(depth) + node.e + "\n");
+        generateBstString(node.left, depth + 1, stringBuilder);
+        generateBstString(node.right, depth + 1, stringBuilder);
+    }
+
+    private String generateDepthSring(int depth) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            stringBuilder.append("--");
+        }
+        return stringBuilder.toString();
+    }
+
     private class Node {
         public E e;
         public Node left, right;
