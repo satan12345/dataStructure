@@ -1,5 +1,10 @@
 package com.able;
 
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.concurrent.LinkedBlockingDeque;
+
 /**
  * @param
  * @author jipeng
@@ -131,6 +136,51 @@ public class BST<E extends Comparable<E>> {
     }
 
     /**
+     * 非递归二分搜索树的前序遍历
+     */
+    public void preOderNR() {
+        Stack<Node> stack = new Stack<>();
+        //节点入栈
+        stack.push(root);
+        //循环判断栈是否为null
+        while (!stack.isEmpty()) {
+            //元素出栈
+            Node pop = stack.pop();
+            System.out.println(pop.e);
+            //节点的又子树入栈
+            if (pop.right != null) {
+                stack.push(pop.right);
+            }
+            //节点左子树入栈
+            if (pop.left != null) {
+                stack.push(pop.left);
+            }
+        }
+    }
+
+    /**
+     *广度优先遍历
+     */
+    public void preLevelOder() {
+        Queue<Node> queue = new LinkedList<>();
+        //入队
+        ((LinkedList<Node>) queue).addLast(root);
+        //循环判断队列是否为空
+        while (!queue.isEmpty()) {
+            //队列中的元素
+            Node node = ((LinkedList<Node>) queue).removeFirst();
+            System.out.println(node.e);
+            if (node.left != null) {
+                ((LinkedList<Node>) queue).addLast(node.left);
+            }
+            if (node.right != null) {
+                ((LinkedList<Node>) queue).addLast(node.right);
+            }
+        }
+    }
+
+
+    /**
      * 前序遍历
      */
     public void preOrder() {
@@ -169,13 +219,14 @@ public class BST<E extends Comparable<E>> {
         midOrder(parent.right);
 
     }
+
     //后续遍历
-    public void postOrder(){
+    public void postOrder() {
         postOrder(root);
     }
 
     private void postOrder(Node node) {
-        if (node==null) {
+        if (node == null) {
             return;
         }
         //操作左子树
@@ -205,9 +256,10 @@ public class BST<E extends Comparable<E>> {
         System.out.println("=======");
 //        System.out.println(bst);
 
-        bst.midOrder();
+        // bst.midOrder();
+        bst.preOderNR();
         System.out.println("===");
-        bst.postOrder();
+        bst.preLevelOder();
     }
 
     @Override
