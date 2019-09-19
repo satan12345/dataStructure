@@ -1,5 +1,8 @@
 package com.able;
 
+import jdk.nashorn.internal.ir.ReturnNode;
+
+import java.util.*;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -159,7 +162,7 @@ public class BST<E extends Comparable<E>> {
     }
 
     /**
-     *广度优先遍历
+     * 广度优先遍历
      */
     public void preLevelOder() {
         Queue<Node> queue = new LinkedList<>();
@@ -238,13 +241,141 @@ public class BST<E extends Comparable<E>> {
 
     }
 
-    public static void main(String[] argsl) {
-        BST<Integer> bst = new BST<>();
-        int[] nums = new int[]{5, 3, 6, 8, 4, 2};
-        for (int num : nums) {
-            // bst.add(num);
-            bst.add1(num);
+    public E minimum1() {
+        if (isEmpty()) {
+            throw new RuntimeException("empty tree");
         }
+        Node cur = root;
+        while (cur.left != null) {
+            cur = cur.left;
+        }
+        return cur.e;
+    }
+
+    /**
+     * 最小值
+     *
+     * @return
+     */
+    public E minimum() {
+        if (isEmpty()) {
+            throw new RuntimeException("empty tree");
+        }
+        Node node = minimum(root);
+        return node.e;
+    }
+
+    private Node minimum(Node node) {
+        if (node.left == null) {
+            return node;
+        }
+        return minimum(node.left);
+
+    }
+
+    public E maxNum1() {
+        if (isEmpty()) {
+            throw new RuntimeException("empty tree");
+        }
+        Node cur = root;
+        while (cur.right != null) {
+            cur = cur.right;
+        }
+        return cur.e;
+    }
+
+    /**
+     * 最大值
+     *
+     * @return
+     */
+    public E maxNum() {
+        if (isEmpty()) {
+            throw new RuntimeException("empty tree");
+        }
+        return maxNode(root).e;
+    }
+
+    public Node maxNode(Node node) {
+        if (node.right == null) {
+            return node;
+        }
+        return maxNode(node.right);
+    }
+
+    /**
+     * 移除最小值
+     *
+     * @return
+     */
+    public E removeMin() {
+        E minimum = minimum();
+        root = removeMin(root);
+        return minimum;
+
+    }
+
+    /**
+     * 查找到节点为根的二分搜索树 返回移除最小值的二叉树 将其作为节点的左子树
+     *
+     * @param node
+     * @return
+     */
+    private Node removeMin(Node node) {
+        //找到最小节点 删除 并返回删除后的新的根节点
+        if (node.left == null) {
+            Node retNode = node.right;
+            node.right = null;
+            size--;
+            return retNode;
+        }
+        node.left = removeMin(node.left);
+        return node;
+    }
+
+    /**
+     * 移除最大值
+     * @return
+     */
+    public E removeMax() {
+        E max = maxNum();
+        root = removeMax(root);
+        return max;
+    }
+
+    private Node removeMax(Node root) {
+        if (root.right == null) {
+            Node left = root.left;
+            root.right = null;
+            size--;
+            return left;
+        }
+        root.right = removeMax(root.right);
+        return root;
+    }
+
+
+    public static void main(String[] argsl) {
+
+        BST<Integer> bst=new BST<>();
+        Random random=new Random();
+        for (int i = 0; i < 1000; i++) {
+            bst.add(random.nextInt(10000));
+        }
+        System.out.println(bst.minimum());
+        List<Integer> list=new ArrayList<>();
+        while (!bst.isEmpty()) {
+            list.add(bst.removeMin());
+        }
+        System.out.println(list);
+
+
+//        BST<Integer> bst = new BST<>();
+//        int[] nums = new int[]{5, 3, 6, 8, 4, 2};
+//        for (int num : nums) {
+//            // bst.add(num);
+//            bst.add1(num);
+//        }
         //////////////////////////////
         //            5             //
         //          /  \            //
@@ -252,15 +383,23 @@ public class BST<E extends Comparable<E>> {
         //        / \     \         //
         //       2   4     8        //
         //////////////////////////////
-        bst.preOrder();
-        System.out.println("=======");
-//        System.out.println(bst);
-
-        // bst.midOrder();
-        bst.preOderNR();
-        System.out.println("===");
-        bst.preLevelOder();
+//        bst.preOrder();
+//        System.out.println("=======");
+////        System.out.println(bst);
+//
+//        // bst.midOrder();
+//        bst.preOderNR();
+//        System.out.println("===");
+//        bst.preLevelOder();
+//        System.out.println("===============");
+//        System.out.println(bst.minimum());
+//        System.out.println(bst.minimum1());
+//
+//        System.out.println("==============");
+//        System.out.println(bst.maxNum());
+//        System.out.println(bst.maxNum1());
     }
+
 
     @Override
     public String toString() {
