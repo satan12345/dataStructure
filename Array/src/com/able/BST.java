@@ -206,6 +206,8 @@ public class BST<E extends Comparable<E>> {
 //        System.out.println(bst);
 
         bst.midOrder();
+        System.out.println("===");
+        bst.postOrder();
     }
 
     @Override
