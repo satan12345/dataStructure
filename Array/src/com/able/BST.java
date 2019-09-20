@@ -333,8 +333,49 @@ public class BST<E extends Comparable<E>> {
         return node;
     }
 
+    public void remove(E e) {
+        root = remove(root, e);
+    }
+
+    private Node remove(Node node, E e) {
+        if (node == null) {
+            return null;
+        }
+        if (e.compareTo(node.e) < 0) {
+            node.left = remove(node.left, e);
+            return node;
+        } else if (e.compareTo(node.e) > 0) {
+            node.right = remove(node.right, e);
+            return node;
+        }
+
+        if (node.left == null) {
+            Node right = node.right;
+            node.right = null;
+            size--;
+            return right;
+        }
+        if (node.right == null) {
+            Node left = node.left;
+            node.left = null;
+            size--;
+            return left;
+        }
+        //待删除节点 左右均不为空
+        //获取比待删除节点大的最小的节点
+        //用这个节点顶替待删除的节点
+        Node succoessor = minimum(node.right);
+        succoessor.right = removeMin(node.right);
+        succoessor.left = node.left;
+        node.left = node.right = null;
+        return succoessor;
+
+
+    }
+
     /**
      * 移除最大值
+     *
      * @return
      */
     public E removeMax() {
@@ -357,13 +398,13 @@ public class BST<E extends Comparable<E>> {
 
     public static void main(String[] argsl) {
 
-        BST<Integer> bst=new BST<>();
-        Random random=new Random();
+        BST<Integer> bst = new BST<>();
+        Random random = new Random();
         for (int i = 0; i < 1000; i++) {
             bst.add(random.nextInt(10000));
         }
         System.out.println(bst.minimum());
-        List<Integer> list=new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
         while (!bst.isEmpty()) {
             list.add(bst.removeMin());
         }
